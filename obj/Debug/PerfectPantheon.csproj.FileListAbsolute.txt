@@ -1,0 +1,24 @@
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\PerfectPantheon.exe.config
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\PerfectPantheon.exe
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\PerfectPantheon.pdb
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\mscorlib.dll
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\Newtonsoft.Json.dll
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\tr\mscorlib.resources.dll
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\normidna.nlp
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\normnfc.nlp
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\normnfd.nlp
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\normnfkc.nlp
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\bin\Debug\normnfkd.nlp
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\obj\Debug\PerfectPantheon.csprojResolveAssemblyReference.cache
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\obj\Debug\PerfectPantheon.exe
+C:\Users\A-131-3\Desktop\mertzehir\Perfect Pantheon\obj\Debug\PerfectPantheon.pdb
+C:\Users\Mertss\Desktop\Üzerinde Çalıştığım Addonalr\Perfect Pantheon\bin\Debug\PerfectPantheon.exe.config
+C:\Users\Mertss\Desktop\Üzerinde Çalıştığım Addonalr\Perfect Pantheon\obj\Debug\PerfectPantheon.exe
+C:\Users\Mertss\Desktop\Üzerinde Çalıştığım Addonalr\Perfect Pantheon\obj\Debug\PerfectPantheon.pdb
+C:\Users\Mertss\Desktop\My Addons\Perfect Pantheon\bin\Debug\PerfectPantheon.exe.config
+C:\Users\Mertss\Desktop\My Addons\Perfect Pantheon\obj\Debug\PerfectPantheon.exe
+C:\Users\Mertss\Desktop\My Addons\Perfect Pantheon\obj\Debug\PerfectPantheon.pdb
+C:\Users\Mertss\Documents\GitHub\Perfect-Pantheon\bin\Debug\PerfectPantheon.exe.config
+C:\Users\Mertss\Documents\GitHub\Perfect-Pantheon\obj\Debug\PerfectPantheon.exe
+C:\Users\Mertss\Documents\GitHub\Perfect-Pantheon\obj\Debug\PerfectPantheon.pdb
