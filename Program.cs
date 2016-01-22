@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.Collections.Generic;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
@@ -11,9 +8,6 @@ using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Rendering;
 using Color = System.Drawing.Color;
-using SharpDX;
-using System.Net;
-using System.Text.RegularExpressions;
 
 
 namespace PerfectPantheon
@@ -24,20 +18,18 @@ namespace PerfectPantheon
         public static Spell.Targeted W;
         public static Spell.Skillshot E;
         static Spell.Targeted Smite = null;
-        public static Menu Menu, FarmingMenu, MiscMenu, DrawMenu, HarassMenu, ComboMenu, SmiteMenu;
+        public static Menu Menu, FarmingMenu, MiscMenu, DrawMenu, HarassMenu, ComboMenu, SmiteMenu,Skin;
         static Item Healthpot;
-        static Item Manapot;
         static Item CrystalFlask;
         static Item CorruptingPotion;
         static Item RefillablePotion;
         static Item HuntersPotion;
         public static SpellSlot SmiteSlot = SpellSlot.Unknown;
-        public static SpellSlot IgniteSlot = SpellSlot.Unknown;
+        private static Spell.Targeted _ignite;
         private static readonly int[] SmitePurple = { 3713, 3726, 3725, 3726, 3723 };
         private static readonly int[] SmiteGrey = { 3711, 3722, 3721, 3720, 3719 };
         private static readonly int[] SmiteRed = { 3715, 3718, 3717, 3716, 3714 };
-        private static readonly int[] SmiteBlue = { 3706, 3710, 3709, 3708, 3707 };
-        public static List<string> DodgeSpells = new List<string>() { "LuxMaliceCannon", "LuxMaliceCannonMis", "EzrealtrueShotBarrage", "KatarinaR", "YasuoDashWrapper", "ViR", "NamiR", "ThreshQ", "xerathrmissilewrapper", "yasuoq3w", "UFSlash", "MalphiteR" };
+        private static readonly int[] SmiteBlue = { 3706, 3710, 3709, 3708, 3707 };   
 
         static void Main(string[] args)
         {
@@ -74,16 +66,13 @@ namespace PerfectPantheon
             if (Player.Instance.ChampionName != "Pantheon")
                 return;
 
-
-            Bootstrap.Init(null);
-
             SpellDataInst smite = _Player.Spellbook.Spells.Where(spell => spell.Name.Contains("smite")).Any() ? _Player.Spellbook.Spells.Where(spell => spell.Name.Contains("smite")).First() : null;
             if (smite != null)
             {
                 Smite = new Spell.Targeted(smite.Slot, 500);
             }
+            _ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
             Healthpot = new Item(2003, 0);
-            Manapot = new Item(2004, 0);
             CrystalFlask = new Item(2041, 0);
             CorruptingPotion = new Item(2033, 0);
             RefillablePotion = new Item(2031, 0);
@@ -94,20 +83,14 @@ namespace PerfectPantheon
             W = new Spell.Targeted(SpellSlot.W, 600);
             E = new Spell.Skillshot(SpellSlot.E, 600, SkillShotType.Cone, 250, 2000, 70);
 
-
             Menu = MainMenu.AddMenu("Perfect Pantheon", "perfectpant");
             Menu.AddLabel("Perrrrrrrrrfect Pantheon Addon");
-            Menu.AddSeparator();
 
-            
             ComboMenu = Menu.AddSubMenu("Combo Settings","ComboSettings");            
             ComboMenu.AddLabel("Combo Settings");
             ComboMenu.Add("QCombo", new CheckBox("Use Q"));
-            ComboMenu.AddSeparator();
             ComboMenu.Add("WCombo", new CheckBox("Use W"));
-            ComboMenu.AddSeparator();
             ComboMenu.Add("ECombo", new CheckBox("Use E"));
-            ComboMenu.AddSeparator();
             ComboMenu.Add("useTiamat", new CheckBox("Use Items"));
 
             HarassMenu = Menu.AddSubMenu("Harass Settings", "HarassSettings");
@@ -120,20 +103,15 @@ namespace PerfectPantheon
             FarmingMenu.AddLabel("Lane Clear");
             FarmingMenu.Add("QLaneClear", new CheckBox("Use Q LaneClear"));
             FarmingMenu.Add("QlaneclearMana", new Slider("Mana < %", 50, 0, 100));
-            FarmingMenu.AddSeparator();
             FarmingMenu.Add("ELaneClear", new CheckBox("Use E LaneClear"));
             FarmingMenu.Add("ElaneclearMana", new Slider("Mana < %", 50, 0, 100));
-            FarmingMenu.AddSeparator();
             FarmingMenu.AddLabel("Jungle Clear");
             FarmingMenu.Add("Qjungle", new CheckBox("Use Q in Jungle"));
             FarmingMenu.Add("QjungleMana", new Slider("Mana < %", 35, 0, 100));
-            FarmingMenu.AddSeparator();
             FarmingMenu.Add("Wjungle", new CheckBox("Use W in Jungle"));
             FarmingMenu.Add("WjungleMana", new Slider("Mana < %", 35, 0, 100));
-            FarmingMenu.AddSeparator();
             FarmingMenu.Add("Ejungle", new CheckBox("Use E in Jungle"));
             FarmingMenu.Add("EjungleMana", new Slider("Mana < %", 35, 0, 100));
-            FarmingMenu.AddSeparator();
             FarmingMenu.AddLabel("Last Hit Settings");
             FarmingMenu.Add("Qlasthit", new CheckBox("Use Q LastHit"));
             FarmingMenu.Add("QlasthitMana", new Slider("Mana < %", 55, 0, 100));
@@ -157,39 +135,40 @@ namespace PerfectPantheon
             MiscMenu = Menu.AddSubMenu("More Settings", "Misc");
 
             MiscMenu.AddLabel("Auto");
-            MiscMenu.Add("Auto Ignite", new CheckBox("Auto Ignite"));       
-            MiscMenu.Add("autoW", new CheckBox("Auto W in Dangerous Spell"));
-            MiscMenu.AddSeparator();
+            MiscMenu.Add("AutoIgnite", new CheckBox("Auto Ignite"));
+            MiscMenu.Add("interrupter", new CheckBox("Use Interruptable Spells"));
+            MiscMenu.Add("gapcloser", new CheckBox("Use Gapclose Spells"));
             MiscMenu.AddLabel("Items");
             MiscMenu.AddLabel("BOTRK,Bilgewater Cutlass Settings");
             MiscMenu.Add("botrkHP", new Slider("My HP < %", 60, 0, 100));
             MiscMenu.Add("botrkenemyHP", new Slider("Enemy HP < %", 60, 0, 100));
-
             MiscMenu.AddLabel("KillSteal");
             MiscMenu.Add("Qkill", new CheckBox("Use Q KillSteal"));
             MiscMenu.Add("Wkill", new CheckBox("Use W KillSteal"));
-
             MiscMenu.AddLabel("Activator");
             MiscMenu.Add("useHP", new CheckBox("Use Health Potion"));           
             MiscMenu.Add("useHPV", new Slider("HP < %", 45, 0, 100));
             MiscMenu.Add("useMana", new CheckBox("Use Mana Potion"));
             MiscMenu.Add("useManaV", new Slider("Mana < %", 45, 0, 100));
-            MiscMenu.Add("useCrystal", new CheckBox("Use Refillable Potions"));
+            MiscMenu.Add("useCrystal", new CheckBox("Use Refillable Potions",false));
             MiscMenu.Add("useCrystalHPV", new Slider("HP < %", 60, 0, 100));
             MiscMenu.Add("useCrystalManaV", new Slider("Mana < %", 60, 0, 100));
 
+            Skin = Menu.AddSubMenu("Skin Changer", "SkinChanger");
+            Skin.Add("checkSkin", new CheckBox("Use Skin Changer"));
+            Skin.Add("skin.Id", new Slider("Skin", 4, 0, 6));
+
             DrawMenu = Menu.AddSubMenu("Draw Settings", "Drawings");
-            DrawMenu.Add("drawAA", new CheckBox("Draw AA Range"));
+            DrawMenu.Add("drawAA", new CheckBox("Draw AA Range", false));
             DrawMenu.Add("drawQ", new CheckBox("Draw Q Range"));
             DrawMenu.Add("drawW", new CheckBox("Draw W Range"));
             DrawMenu.Add("drawE", new CheckBox("Draw E Range"));
+            DrawMenu.Add("drawR", new CheckBox("Draw R Range"));
 
             Game.OnTick += Game_OnTick;
             Drawing.OnDraw += Drawing_OnDraw;
-            AIHeroClient.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
-
-            Chat.Print("Perrrrrrrrrfect Pantheon Addon", System.Drawing.Color.Red);
-            Chat.Print("V0.0.1", System.Drawing.Color.Gray);
+            Gapcloser.OnGapcloser += Gapcloser_OnGapCloser;
+            Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
         }
 
         private static void SetSmiteSlot()
@@ -203,15 +182,26 @@ namespace PerfectPantheon
             }
         }
 
-        static void AIHeroClient_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        private static void Interrupter_OnInterruptableSpell(Obj_AI_Base sender,
+             Interrupter.InterruptableSpellEventArgs e)
         {
-            if (DodgeSpells.Any(el => el == args.SData.Name) && Menu[args.SData.Name].Cast<CheckBox>().CurrentValue && MiscMenu["AutoW"].Cast<CheckBox>().CurrentValue)
+            if (sender.IsMe) return;
+            if (MiscMenu["interrupter"].Cast<CheckBox>().CurrentValue && sender.IsEnemy &&
+                e.DangerLevel >= DangerLevel.Medium && sender.IsValidTarget(W.Range))
             {
-                if (W.IsReady() && W.IsInRange(sender))
-                {
-                    W.Cast(sender);
-                }
+                Player.CastSpell(SpellSlot.W, sender);
+            }
 
+        }
+
+
+        public static void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
+        {
+            if (sender.IsMe) return;
+            if (MiscMenu["gapcloser"].Cast<CheckBox>().CurrentValue && sender.IsEnemy &&
+                sender.IsValidTarget(W.Range))
+            {
+                Player.CastSpell(SpellSlot.W, sender);
             }
         }
 
@@ -226,7 +216,21 @@ namespace PerfectPantheon
             var CrystalManav = MiscMenu["useCrystalManav"].Cast<Slider>().CurrentValue;
             var useItem = ComboMenu["useTiamat"].Cast<CheckBox>().CurrentValue;
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            var igntarget = TargetSelector.GetTarget(600, DamageType.True);
+
+            if (MiscMenu["AutoIgnite"].Cast<CheckBox>().CurrentValue)
+            {
+                if (!_ignite.IsReady() || Player.Instance.IsDead) return;
+                foreach (
+                    var source in
+                        EntityManager.Heroes.Enemies
+                            .Where(
+                                a => a.IsValidTarget(_ignite.Range) &&
+                                    a.Health < 50 + 20 * Player.Instance.Level - (a.HPRegenRate / 5 * 3)))
+                {
+                    _ignite.Cast(source);
+                    return;
+                }
+            }
 
             if (Smite != null)
             {
@@ -258,7 +262,7 @@ namespace PerfectPantheon
 
             if (Crystal && Player.Instance.HealthPercent < CrystalHPv || Crystal && Player.Instance.ManaPercent < CrystalManav)
             {
-                if (Item.HasItem(RefillablePotion.Id) && Item.CanUseItem(RefillablePotion.Id) && !Player.HasBuff("RegenerationPotion") && !Player.HasBuff("FlaskOfCrystalWater") && !Player.HasBuff("ItemCrystalFlask"))
+                if (Item.HasItem(RefillablePotion.Id) && Item.CanUseItem(RefillablePotion.Id) && !Player.HasBuff("RegenerationPotion") && !Player.HasBuff("FlaskOfCrystalWater") && !Player.HasBuff("ItemCrystalFlask") && !Player.HasBuff("ItemDarkCrystalFlaskJungle"))
                 {
                     RefillablePotion.Cast();
                 }
@@ -271,6 +275,14 @@ namespace PerfectPantheon
                     HuntersPotion.Cast();
                 }
 
+            }
+
+            if (_Player.SkinId != Skin["skin.Id"].Cast<Slider>().CurrentValue)
+            {
+                if (checkSkin())
+                {
+                    Player.SetSkinId(SkinId());
+                }
             }
 
             // if (Crystal && Player.Instance.HealthPercent < CrystalHPv || Crystal && Player.Instance.ManaPercent < CrystalManav)
@@ -287,10 +299,11 @@ namespace PerfectPantheon
                 HandleItems();
             }
 
-
+            var t = TargetSelector.GetTarget(600, DamageType.True);
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Combo();
+                SmiteOnTarget(t);
             }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
@@ -312,6 +325,16 @@ namespace PerfectPantheon
             
 
         }
+
+        public static int SkinId()
+        {
+            return Skin["skin.Id"].Cast<Slider>().CurrentValue;
+        }
+        public static bool checkSkin()
+        {
+            return Skin["checkSkin"].Cast<CheckBox>().CurrentValue;
+        }
+
         private static void SmiteOnTarget(AIHeroClient t)
         {
             var range = 700f;
@@ -357,9 +380,8 @@ namespace PerfectPantheon
             var useQ = ComboMenu["QCombo"].Cast<CheckBox>().CurrentValue;
             var useW = ComboMenu["WCombo"].Cast<CheckBox>().CurrentValue;
             var useE = ComboMenu["ECombo"].Cast<CheckBox>().CurrentValue;
-            var useItem = ComboMenu["useTiamat"].Cast<CheckBox>().CurrentValue;
-            var t = TargetSelector.GetTarget(600, DamageType.True);
-            SmiteOnTarget(t);
+            var useItem = ComboMenu["useTiamat"].Cast<CheckBox>().CurrentValue;          
+           
             if (useQ && Q.IsReady() && target.IsValidTarget(Q.Range) && !target.IsDead && !target.IsZombie)
             {
                 Q.Cast(target);
@@ -372,13 +394,6 @@ namespace PerfectPantheon
             {
                 E.Cast(target);
             }
-            
-               
-            if (useItem && target.IsValidTarget(400) && !target.IsDead && !target.IsZombie)
-            {
-                HandleItems();
-            }
-
         }
         private static void KillSteal()
         {

@@ -19,6 +19,12 @@ C:\Users\Mertss\Desktop\Üzerinde Çalıştığım Addonalr\Perfect Pantheon\obj
 C:\Users\Mertss\Desktop\My Addons\Perfect Pantheon\bin\Debug\PerfectPantheon.exe.config
 C:\Users\Mertss\Desktop\My Addons\Perfect Pantheon\obj\Debug\PerfectPantheon.exe
 C:\Users\Mertss\Desktop\My Addons\Perfect Pantheon\obj\Debug\PerfectPantheon.pdb
-C:\Users\Mertss\Documents\GitHub\Perfect-Pantheon\bin\Debug\PerfectPantheon.exe.config
-C:\Users\Mertss\Documents\GitHub\Perfect-Pantheon\obj\Debug\PerfectPantheon.exe
-C:\Users\Mertss\Documents\GitHub\Perfect-Pantheon\obj\Debug\PerfectPantheon.pdb
+C:\Users\Mertss\Desktop\buddy\My Addons\Perfect Pantheon\bin\Debug\PerfectPantheon.exe.config
+C:\Users\Mertss\Desktop\buddy\My Addons\Perfect Pantheon\obj\Debug\PerfectPantheon.exe
+C:\Users\Mertss\Desktop\buddy\My Addons\Perfect Pantheon\obj\Debug\PerfectPantheon.pdb
+C:\Users\Mertss\Desktop\buddy\Perfect Pantheon\bin\Debug\PerfectPantheon.exe.config
+C:\Users\Mertss\Desktop\buddy\Perfect Pantheon\obj\Debug\PerfectPantheon.exe
+C:\Users\Mertss\Desktop\buddy\Perfect Pantheon\obj\Debug\PerfectPantheon.pdb
+C:\Users\Mertss\Desktop\Perfect Pantheon\bin\Debug\PerfectPantheon.exe.config
+C:\Users\Mertss\Desktop\Perfect Pantheon\obj\Debug\PerfectPantheon.exe
+C:\Users\Mertss\Desktop\Perfect Pantheon\obj\Debug\PerfectPantheon.pdb
